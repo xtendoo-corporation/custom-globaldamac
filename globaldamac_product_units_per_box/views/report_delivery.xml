@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2024 Xtendoo (https://xtendoo.es)
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
+<odoo>
+    <!-- Add box quantity column in delivery report -->
+    <template id="report_delivery_document_units_per_box" inherit_id="stock.report_delivery_document">
+        <!-- For stock moves (when state != done) - Add Cajas header -->
+        <xpath expr="//table[@name='stock_move_table']/thead/tr/th[@name='th_sm_product']" position="after">
+            <th name="th_sm_box_quantity"><strong>Cajas</strong></th>
+        </xpath>
+        <!-- For stock moves (when state != done) - Add Cajas data -->
+        <xpath expr="//table[@name='stock_move_table']/tbody/tr/td[1]" position="after">
+            <td name="td_sm_box_quantity">
+                <t t-if="move.units_per_box and move.units_per_box &gt; 1.0">
+                    <span t-esc="move.box_quantity" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                </t>
+            </td>
+        </xpath>
+
+        <!-- For stock move lines (when state == done) - Add Cajas header -->
+        <xpath expr="//table[@name='stock_move_line_table']/thead/tr/th[@name='th_sml_product']" position="after">
+            <th name="th_sml_box_quantity"><strong>Cajas</strong></th>
+        </xpath>
+    </template>
+
+    <!-- Inherit aggregated move lines template -->
+    <template id="stock_report_delivery_aggregated_move_lines_box" inherit_id="stock.stock_report_delivery_aggregated_move_lines">
+        <xpath expr="//tr/td[1]" position="after">
+            <td class="text-center" name="move_line_aggregated_box_quantity">
+                <t t-if="aggregated_lines[line]['units_per_box'] &gt; 1.0">
+                    <span t-esc="aggregated_lines[line]['box_quantity']"
+                          t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                </t>
+            </td>
+        </xpath>
+    </template>
+
+    <!-- Inherit serial move lines template -->
+    <template id="stock_report_delivery_has_serial_move_line_box" inherit_id="stock.stock_report_delivery_has_serial_move_line">
+        <xpath expr="//td[1]" position="after">
+            <td class="text-center" name="move_line_box_quantity">
+                <t t-if="move_line.units_per_box and move_line.units_per_box &gt; 1.0">
+                    <span t-esc="move_line.box_quantity"
+                          t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                </t>
+            </td>
+        </xpath>
+    </template>
+</odoo>

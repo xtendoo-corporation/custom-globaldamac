@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2024 Xtendoo (https://xtendoo.es)
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
+<odoo>
+    <!-- Add box quantity column in invoice report -->
+    <template id="report_invoice_document_units_per_box" inherit_id="account.report_invoice_document">
+        <!-- Add Cajas header in invoice line table -->
+        <xpath expr="//table[@name='invoice_line_table']/thead/tr/th[@name='th_description']" position="after">
+            <th name="th_box_quantity" class="text-end">
+                <span>Cajas</span>
+            </th>
+        </xpath>
+
+        <!-- Add Cajas data in invoice line table - after description column -->
+        <xpath expr="//td[@name='td_quantity']" position="before">
+            <td name="td_box_quantity" class="text-end">
+                    <span t-field="line.box_quantity" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+            </td>
+        </xpath>
+    </template>
+</odoo>
+
