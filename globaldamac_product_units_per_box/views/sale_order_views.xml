@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2024 Xtendoo (https://xtendoo.es)
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
+<odoo>
+    <!-- Inherit sale order form to show box information in order lines -->
+    <record id="sale_order_form_view_units_per_box" model="ir.ui.view">
+        <field name="name">sale.order.form.units.per.box</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="attributes">
+                <attribute name="string">Unidades</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
+                <field name="units_per_box"
+                       string="Uds/Caja"
+                       optional="show"/>
+                <field name="box_quantity"
+                       string="Cajas"
+                       optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Form view for order lines -->
+    <record id="sale_order_line_form_view_units_per_box" model="ir.ui.view">
+        <field name="name">sale.order.line.form.units.per.box</field>
+        <field name="model">sale.order.line</field>
+        <field name="inherit_id" ref="sale.view_order_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_uom_qty']" position="after">
+                <field name="units_per_box"
+                       string="Uds/Caja"
+                       optional="show"/>
+                <field name="box_quantity"
+                       string="Cajas"
+                       optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

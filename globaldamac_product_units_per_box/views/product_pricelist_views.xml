@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2024 Xtendoo (https://xtendoo.es)
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
+<odoo>
+    <!-- Inherit pricelist form to show box quantity fields in pricelist items -->
+    <record id="product_pricelist_view_form_box" model="ir.ui.view">
+        <field name="name">product.pricelist.form.box</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='item_ids']/tree/field[@name='min_quantity']" position="after">
+                <field name="use_box_quantity" optional="hide"/>
+                <field name="min_box_quantity"
+                       string="Min. Cajas"
+                       optional="hide"/>
+                <field name="max_box_quantity"
+                       string="Max. Cajas"
+                       optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

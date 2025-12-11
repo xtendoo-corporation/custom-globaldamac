@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2024 Xtendoo (https://xtendoo.es)
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
+<odoo>
+    <!-- Inherit stock picking form to show box information in move lines -->
+    <record id="view_picking_form_units_per_box" model="ir.ui.view">
+        <field name="name">stock.picking.form.units.per.box</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='quantity']" position="after">
+                <field name="units_per_box"
+                       string="Uds/Caja"
+                       optional="show"/>
+                <field name="box_quantity"
+                       string="Cajas"
+                       optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Stock move tree view -->
+    <record id="view_stock_move_tree_units_per_box" model="ir.ui.view">
+        <field name="name">stock.move.tree.units.per.box</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_uom_qty']" position="after">
+                <field name="units_per_box"
+                       string="Uds/Caja"
+                       optional="hide"/>
+                <field name="box_quantity"
+                       string="Cajas"
+                       optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Stock move form view -->
+    <record id="view_stock_move_form_units_per_box" model="ir.ui.view">
+        <field name="name">stock.move.form.units.per.box</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_uom_qty']" position="after">
+                <field name="units_per_box"
+                       readonly="1"/>
+                <field name="box_quantity"
+                       readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Stock move line tree view -->
+    <record id="view_stock_move_line_tree_units_per_box" model="ir.ui.view">
+        <field name="name">stock.move.line.tree.units.per.box</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='quantity']" position="after">
+                <field name="units_per_box"
+                       string="Uds/Caja"
+                       optional="hide"/>
+                <field name="box_quantity"
+                       string="Cajas"
+                       optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
