@@ -22,6 +22,7 @@
         "product",
         "stock",
         "account",
+        "stock_picking_report_valued",
     ],
     "data": [
         "security/ir.model.access.csv",

@@ -14,8 +14,19 @@
         <!-- Add Cajas data in invoice line table - after description column -->
         <xpath expr="//td[@name='td_quantity']" position="before">
             <td name="td_box_quantity" class="text-end">
-                    <span t-field="line.box_quantity" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                <span t-field="line.box_quantity"
+                      t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
             </td>
+        </xpath>
+
+        <xpath expr="//td[@name='td_quantity']" position="replace">
+            <td name="td_quantity" class="text-end">
+                <span t-field="line.quantity">3.00</span>
+            </td>
+        </xpath>
+
+        <xpath expr="//th[@name='th_priceunit']" position="replace">
+            <th name="th_priceunit" class="text-end">Precio</th>
         </xpath>
     </template>
 </odoo>

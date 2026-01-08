@@ -19,6 +19,20 @@
         <field name="model">product.product</field>
         <field name="inherit_id" ref="product.product_product_tree_view"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='uom_id']" position="after">
+                <field name="units_per_box"
+                       string="Uds/Caja"
+                       optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--product.product_variant_easy_edit_view -->
+    <record id="product_product_variant_easy_edit_view_units_per_box" model="ir.ui.view">
+        <field name="name">product.product.variant.easy.edit.units.per.box</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+        <field name="arch" type="xml">
             <xpath expr="//field[@name='default_code']" position="after">
                 <field name="units_per_box"
                        string="Uds/Caja"
