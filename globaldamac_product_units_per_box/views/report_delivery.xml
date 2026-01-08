@@ -6,46 +6,116 @@
     <template id="report_delivery_document_units_per_box" inherit_id="stock.report_delivery_document">
         <!-- For stock moves (when state != done) - Add Cajas header -->
         <xpath expr="//table[@name='stock_move_table']/thead/tr/th[@name='th_sm_product']" position="after">
-            <th name="th_sm_box_quantity"><strong>Cajas</strong></th>
+            <th name="th_sm_box_quantity">
+                <strong>Cajas</strong>
+            </th>
         </xpath>
         <!-- For stock moves (when state != done) - Add Cajas data -->
         <xpath expr="//table[@name='stock_move_table']/tbody/tr/td[1]" position="after">
             <td name="td_sm_box_quantity" class="text-end">
                 <t t-if="move.units_per_box and move.units_per_box &gt; 1.0">
-                    <span t-esc="move.box_quantity" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}' />
+                    <span t-esc="move.box_quantity"
+                          t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
                 </t>
             </td>
-
         </xpath>
 
         <!-- For stock move lines (when state == done) - Add Cajas header -->
         <xpath expr="//table[@name='stock_move_line_table']/thead/tr/th[@name='th_sml_product']" position="after">
-            <th name="th_sml_box_quantity"><strong>Cajas</strong></th>
+            <th name="th_sml_box_quantity">
+                <strong>Cajas</strong>
+            </th>
+        </xpath>
+    </template>
+
+    <!-- Hide UoM in stock_move_table -->
+    <template id="report_delivery_document_hide_uom" inherit_id="stock.report_delivery_document" priority="20">
+        <!-- Replace Ordered column td to remove UoM (now td[3] because Cajas is td[2]) -->
+        <xpath expr="//table[@name='stock_move_table']/tbody/tr/td[3]" position="replace">
+            <td>
+                <span t-field="move.product_uom_qty">3.00</span>
+                <span t-if="move.product_packaging_id">
+                    (
+                    <span t-field="move.product_packaging_qty" t-options='{"widget": "integer"}'/>
+                    <span t-field="move.product_packaging_id"/>)
+                </span>
+            </td>
+        </xpath>
+
+        <!-- Replace Delivered column td to remove UoM (now td[4] because Cajas is td[2]) -->
+        <xpath expr="//table[@name='stock_move_table']/tbody/tr/td[4]" position="replace">
+            <td>
+                <span t-field="move.quantity">3.00</span>
+                <span t-if="move.product_packaging_id">
+                    (
+                    <span t-field="move.product_packaging_quantity" t-options='{"widget": "integer"}'/>
+                    <span t-field="move.product_packaging_id"/>)
+                </span>
+            </td>
         </xpath>
     </template>
 
     <!-- Inherit aggregated move lines template -->
-    <template id="stock_report_delivery_aggregated_move_lines_box" inherit_id="stock.stock_report_delivery_aggregated_move_lines">
+    <template id="stock_report_delivery_aggregated_move_lines_box"
+              inherit_id="stock.stock_report_delivery_aggregated_move_lines">
         <xpath expr="//tr/td[1]" position="after">
-            <td class="text-end" name="move_line_aggregated_box_quantity" >
+            <td class="text-end" name="move_line_aggregated_box_quantity">
                 <t t-if="aggregated_lines[line]['units_per_box'] &gt; 1.0">
                     <span t-esc="aggregated_lines[line]['box_quantity']"
-                          t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}' />
+                          t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
                 </t>
             </td>
         </xpath>
+
+        <!-- Hide UoM name in Ordered column -->
+        <xpath expr="//td[@name='move_line_aggregated_qty_ordered']/span[2]" position="replace"/>
+
+        <!-- Hide UoM name in Delivered column -->
+        <xpath expr="//td[@name='move_line_aggregated_quantity']/t/span[2]" position="replace"/>
     </template>
 
     <!-- Inherit serial move lines template -->
-    <template id="stock_report_delivery_has_serial_move_line_box" inherit_id="stock.stock_report_delivery_has_serial_move_line">
+    <template id="stock_report_delivery_has_serial_move_line_box"
+              inherit_id="stock.stock_report_delivery_has_serial_move_line">
         <xpath expr="//td[1]" position="after">
             <td class="text-end" name="move_line_box_quantity">
                 <t t-if="move_line.units_per_box and move_line.units_per_box &gt; 1.0">
                     <span t-esc="move_line.box_quantity"
-                          t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}' />
+                          t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
                 </t>
             </td>
         </xpath>
+
+        <!-- Hide UoM name in quantity column -->
+        <xpath expr="//td[@name='move_line_lot_quantity']/span[@t-field='move_line.product_uom_id']"
+               position="replace"/>
     </template>
 
+    <!-- stock_picking_report_valued.valued_report_picking-->
+    <template id="valued_report_picking_units_per_box" inherit_id="stock_picking_report_valued.valued_report_picking">
+        <xpath expr="//t[@t-if='o.valued and o.sale_id and o.move_line_ids and is_outgoing']" position="replace">
+            <t t-if="o.valued and o.sale_id and o.move_line_ids and is_outgoing">
+                <th class="text-end">
+                    <strong>Precio</strong>
+                </th>
+                <th class="text-end" groups="product.group_discount_per_so_line">
+                    <strong>Descuento</strong>
+                </th>
+                <th class="text-end">
+                    <strong>Subtotal</strong>
+                </th>
+                <th class="text-end">
+                    <strong>Impuestos</strong>
+                </th>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="report_picking_globaldamac" inherit_id="stock.report_picking">
+        <xpath expr="//span[@t-field='ml.product_uom_id']" position="replace"/>
+        <span t-field="ml.quantity">3.00</span>
+        <xpath expr="//td[2]" position="attributes">
+            <attribute name="class" add="text-end" separator=" "/>
+        </xpath>
+    </template>
 </odoo>
