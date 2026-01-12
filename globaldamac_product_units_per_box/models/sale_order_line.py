@@ -23,20 +23,20 @@ class SaleOrderLine(models.Model):
     @api.onchange('product_id')
     def _onchange_product_id_set_quantity(self):
         """Set default quantity to units_per_box when product is selected."""
-        if self.product_id and self.product_id.units_per_box > 1.0:
+        if self.product_id and self.product_id.units_per_box > 0:
             self.product_uom_qty = self.product_id.units_per_box
             self.box_quantity = 1.0
 
     @api.onchange('box_quantity')
     def _onchange_box_quantity(self):
         """Update product_uom_qty when box_quantity changes."""
-        if self.box_quantity and self.units_per_box > 1.0:
+        if self.box_quantity and self.units_per_box > 0:
             self.product_uom_qty = self.box_quantity * self.units_per_box
 
     @api.onchange('product_uom_qty')
     def _onchange_product_uom_qty(self):
         """Update box_quantity when product_uom_qty changes."""
-        if self.product_uom_qty and self.units_per_box > 1.0:
+        if self.product_uom_qty and self.units_per_box > 0:
             self.box_quantity = self.product_uom_qty / self.units_per_box
 
     def _prepare_procurement_values(self, group_id=False):
