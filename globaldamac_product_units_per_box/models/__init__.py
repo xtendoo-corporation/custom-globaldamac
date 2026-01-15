@@ -7,4 +7,4 @@ from . import product_pricelist_item
 from . import stock_move
 from . import stock_move_line
 from . import account_move_line
-
+from . import sale_order

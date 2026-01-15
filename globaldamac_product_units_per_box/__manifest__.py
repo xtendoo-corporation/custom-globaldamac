@@ -22,6 +22,7 @@
         "product",
         "stock",
         "account",
+        "sale_product_matrix",
     ],
     "data": [
         "security/ir.model.access.csv",
