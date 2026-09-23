@@ -9,10 +9,12 @@
     "depends":
         [
             "sale",
+            "stock",
         ],
     "data":
         [
             "report/report_saleorder_document.xml",
+            "report/report_deliveryslip.xml",
         ],
     'installable': True,
     'active': True,

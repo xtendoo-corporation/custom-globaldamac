@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_delivery_document" inherit_id="stock.report_delivery_document">
+        <xpath expr="//h2/span[@t-field='o.name']" position="replace">
+            <span>Albarán <t t-out="o.origin"/></span>
+        </xpath>
+        <xpath expr="//div[@name='div_origin']" position="replace"/>
+    </template>
+</odoo>
